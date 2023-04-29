@@ -69,6 +69,7 @@ const TableWithDrawer = () => {
         className="table"
         columns={columns}
         dataSource={data}
+        pagination={false}
         onRow={(record) => {
           return {
             onClick: () => showDetailsDrawer(record),

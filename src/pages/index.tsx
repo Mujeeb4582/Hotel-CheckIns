@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useState } from "react";
 import { Layout, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import MyHeader from '@/components/header';
+import MyHeader from '@/components/layout/header';
 import TableWithDetails from '@/components/table';
 
 const { Content } = Layout;

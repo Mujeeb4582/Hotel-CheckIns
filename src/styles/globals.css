@@ -72,3 +72,7 @@
   background-color: #fafafa;
   padding: 16px;
 }
+
+.ant-table-tbody > tr:hover {
+  cursor: pointer;
+}

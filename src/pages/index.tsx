@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import { useState } from "react";
-import { Layout, Menu, Table, Button, Modal, Form, Input } from "antd";
+import { Layout, Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import MyHeader from '@/components/header';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const columns = [
   {
@@ -63,20 +64,7 @@ export default function Home() {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Layout>
-      <Header className="header">
-      <div className="logo">AAA</div>
-      <Menu theme="light" mode="horizontal" defaultSelectedKeys={["1"]} className="menu">
-        <Menu.Item key="1">Feedback</Menu.Item>
-        <Menu.Item key="2">Support</Menu.Item>
-        <Menu.Item key="3">
-          <img
-            src="https://img.lovepik.com/element/40128/7461.png_1200.png"
-            alt="avatar"
-            style={{ width: 20, height: 20 }}
-          />
-        </Menu.Item>
-      </Menu>
-    </Header>
+      <MyHeader />
       <Content style={{ backgroundColor: "#fff" }}>
         <div className="site-layout-content">
           <section className="check-ins">

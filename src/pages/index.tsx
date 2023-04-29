@@ -40,18 +40,18 @@ const data = [
 ];
 
 export default function Home() {
-  const [visible, setVisible] = useState(false);
+  const [open, setopen] = useState(false);
 
   const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
     console.log(values);
-    setVisible(false);
+    setopen(false);
     form.resetFields();
   };
 
   const onCancel = () => {
-    setVisible(false);
+    setopen(false);
     form.resetFields();
   };
 
@@ -75,7 +75,7 @@ export default function Home() {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setVisible(true)}
+              onClick={() => setopen(true)}
               className="add-button"
             >
               Add Check In
@@ -86,7 +86,7 @@ export default function Home() {
 
           <Modal
             title="New CheckIn"
-            visible={visible}
+            open={open}
             onCancel={onCancel}
             footer={null}
           >

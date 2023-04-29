@@ -1,43 +1,11 @@
 import Head from 'next/head'
 import { useState } from "react";
-import { Layout, Table, Button, Modal, Form, Input } from "antd";
+import { Layout, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import MyHeader from '@/components/header';
+import TableWithDetails from '@/components/table';
 
 const { Content } = Layout;
-
-const columns = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-  },
-  {
-    title: "Owner",
-    dataIndex: "owner",
-    key: "owner",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-  },
-  {
-    title: "Created At",
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    title: "CheckIn name",
-    owner: "John Doe",
-    status: "CHECKED IN",
-    createdAt: "28th Apr 2023",
-  },
-];
 
 export default function Home() {
   const [open, setopen] = useState(false);
@@ -82,7 +50,7 @@ export default function Home() {
             </Button>
           </section>
 
-          <Table className="table" columns={columns} dataSource={data} />
+          <TableWithDetails />
 
           <Modal
             title="New CheckIn"

@@ -1,21 +1,23 @@
 import { Layout, Menu } from "antd";
+import styles from "../../styles/header.module.scss";
 
 const MyHeader = () => {
-  return(
-  <Layout.Header className="header">
-  <div className="logo">AAA</div>
-  <Menu theme="light" mode="horizontal" defaultSelectedKeys={["1"]} className="menu">
-    <Menu.Item key="1">Feedback</Menu.Item>
-    <Menu.Item key="2">Support</Menu.Item>
-    <Menu.Item key="3">
-      <img
-        src="https://img.lovepik.com/element/40128/7461.png_1200.png"
-        alt="avatar"
-        style={{ width: 20, height: 20 }}
-      />
-    </Menu.Item>
-  </Menu>
-</Layout.Header>
-)};
+  return (
+    <Layout.Header className={styles.header}>
+      <div className={styles.logo}>AAA</div>
+      <ul className={styles.menu}>
+        <li className={styles.menuItem}>Feedback</li>
+        <li className={styles.menuItem}>Support</li>
+        <li className={styles.menuItem}>
+          <img
+            src="https://img.lovepik.com/element/40128/7461.png_1200.png"
+            alt="avatar"
+            className={styles.menuItemImg}
+          />
+        </li>
+      </ul>
+    </Layout.Header>
+  );
+};
 
 export default MyHeader;

@@ -1,5 +1,6 @@
-import { Table, Drawer } from "antd";
-import { useState } from "react";
+import { Table, Drawer, Tag } from "antd";
+import { useCallback, useState } from "react";
+import styles from "../styles/table.module.scss";
 
 interface CheckIn {
   key: string;
@@ -24,6 +25,17 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
+    render: (status: string) => {
+      let color = "#79FFE1";
+      if (status === "CHECKED OUT") {
+        color = "volcano";
+      }
+      return (
+        <Tag color={color} key={status} className={styles.tag}>
+          {status.toUpperCase()}
+        </Tag>
+      );
+    },
   },
   {
     title: "Created At",
@@ -39,42 +51,47 @@ const data: CheckIn[] = [
     owner: "John Doe",
     status: "CHECKED IN",
     createdAt: "28th Apr 2023",
-    imageUrl: "https://i.pinimg.com/550x/d7/1f/79/d71f79e1e76221f35f5911488aeb8f0c.jpg", // add image URL to data
+    imageUrl:
+      "https://i.pinimg.com/550x/d7/1f/79/d71f79e1e76221f35f5911488aeb8f0c.jpg",
   },
   {
-        key: "2",
-        title: "Another CheckIn",
-        owner: "Jane Smith",
-        status: "CHECKED OUT",
-        createdAt: "29th Apr 2023",
-        imageUrl: "https://static.toiimg.com/photo/66840273.cms"
-      },
+    key: "2",
+    title: "Another CheckIn",
+    owner: "Jane Smith",
+    status: "CHECKED IN",
+    createdAt: "29th Apr 2023",
+    imageUrl: "https://static.toiimg.com/photo/66840273.cms",
+  },
 ];
 
 const TableWithDrawer = () => {
   const [open, setopen] = useState(false);
   const [details, setDetails] = useState<CheckIn | undefined>(undefined);
-  const showDetailsDrawer = (record: CheckIn) => {
+
+  const showDetailsDrawer = useCallback((record: CheckIn) => {
     setDetails(record);
     setopen(true);
-  };
+  }, []);
 
-  const onClose = () => {
+  const onRow = useCallback(
+    (record: CheckIn) => ({
+      onClick: () => showDetailsDrawer(record),
+    }),
+    []
+  );
+
+  const onClose = useCallback(() => {
     setopen(false);
-  };
+  }, [setopen]);
 
   return (
     <>
       <Table
-        className="table"
+        className={styles.table}
         columns={columns}
         dataSource={data}
         pagination={false}
-        onRow={(record) => {
-          return {
-            onClick: () => showDetailsDrawer(record),
-          };
-        }}
+        onRow={onRow}
       />
       <Drawer
         title="Details"
@@ -82,12 +99,16 @@ const TableWithDrawer = () => {
         closable={true}
         onClose={onClose}
         open={open}
-        width={400}
+        width={430}
       >
         {details && (
           <div>
-            <p>{details.title}</p>
-            <img src={details.imageUrl} alt={details.title} style={{ maxWidth: "100%" }} />
+            <p className={styles.drawerBodyTitle}>{details.title}</p>
+            <img
+              src={details.imageUrl}
+              alt={details.title}
+              className={styles.drawerBodyImage}
+            />
           </div>
         )}
       </Drawer>

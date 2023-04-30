@@ -1,0 +1,32 @@
+.header {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d9d9d9;
+
+  .logo {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .menu {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+  }
+
+  .menuItem {
+    margin-right: 20px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .menuItemImg {
+    margin-right: -20px;
+    max-height: 24px;
+    max-width: 24px;
+  }
+}

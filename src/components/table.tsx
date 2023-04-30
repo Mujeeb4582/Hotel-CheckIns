@@ -1,20 +1,27 @@
 import { Table, Drawer, Tag } from "antd";
 import { useCallback, useState } from "react";
+import { useQuery } from "@apollo/client";
 import styles from "../styles/table.module.scss";
+import { GET_ALL_CHECKINS, GET_CHECKIN_BY_ID } from "../../graphql/queries";
+import moment from "moment";
 
 interface CheckIn {
+  id: number;
   key: string;
-  title: string;
-  owner: string;
+  name: string;
+  owener: string;
+  comment: string;
   status: string;
-  createdAt: string;
-  imageUrl: string;
+  created_at: string;
+  updated_at: string;
+  image_url: string;
 }
+
 const columns = [
   {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
   },
   {
     title: "Owner",
@@ -32,45 +39,30 @@ const columns = [
       }
       return (
         <Tag color={color} key={status} className={styles.tag}>
-          {status.toUpperCase()}
+          {status && status.toUpperCase()}
         </Tag>
       );
     },
   },
   {
     title: "Created At",
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-];
-
-const data: CheckIn[] = [
-  {
-    key: "1",
-    title: "CheckIn name",
-    owner: "John Doe",
-    status: "CHECKED IN",
-    createdAt: "28th Apr 2023",
-    imageUrl:
-      "https://i.pinimg.com/550x/d7/1f/79/d71f79e1e76221f35f5911488aeb8f0c.jpg",
-  },
-  {
-    key: "2",
-    title: "Another CheckIn",
-    owner: "Jane Smith",
-    status: "CHECKED IN",
-    createdAt: "29th Apr 2023",
-    imageUrl: "https://static.toiimg.com/photo/66840273.cms",
+    dataIndex: "created_at",
+    key: "created_at",
+    render: (created_at: string) => moment(created_at).format("Do MMMM YYYY"),
   },
 ];
 
 const TableWithDrawer = () => {
-  const [open, setopen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [details, setDetails] = useState<CheckIn | undefined>(undefined);
+
+  const { loading, error, data } = useQuery<{ check_in: CheckIn[] }>(
+    GET_ALL_CHECKINS
+  );
 
   const showDetailsDrawer = useCallback((record: CheckIn) => {
     setDetails(record);
-    setopen(true);
+    setOpen(true);
   }, []);
 
   const onRow = useCallback(
@@ -81,15 +73,18 @@ const TableWithDrawer = () => {
   );
 
   const onClose = useCallback(() => {
-    setopen(false);
-  }, [setopen]);
+    setOpen(false);
+  }, [setOpen]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <>
       <Table
         className={styles.table}
         columns={columns}
-        dataSource={data}
+        dataSource={data?.check_in}
         pagination={false}
         onRow={onRow}
       />
@@ -103,12 +98,17 @@ const TableWithDrawer = () => {
       >
         {details && (
           <div>
-            <p className={styles.drawerBodyTitle}>{details.title}</p>
+            <p className={styles.drawerBodyTitle}>{details.name}</p>
             <img
-              src={details.imageUrl}
-              alt={details.title}
+              src={details.image_url}
+              alt={details.name}
               className={styles.drawerBodyImage}
             />
+            <p>
+              <br />
+              <strong>Comment: </strong>
+              {details.comment}
+            </p>
           </div>
         )}
       </Drawer>

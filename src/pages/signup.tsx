@@ -1,11 +1,35 @@
-import { Button, Checkbox, Divider, Form, Input, Typography } from "antd";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  Typography,
+  message,
+} from "antd";
 import React from "react";
 import styles from "../styles/login.module.scss";
 import Link from "next/link";
+import { auth } from "../firebase/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import router from "next/router";
 
 const Signup: React.FC = () => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    createUserWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        router.push("/");
+        message.success("Sign Up Successful!");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -17,10 +17,27 @@ import {
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/login.module.scss";
+import { auth } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import router from "next/router";
 
 const Login: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+    // console.log("Received values of form: ", values);
+
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        router.push("/");
+        message.success("Login Successful!");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   const login = () => {
@@ -37,12 +54,20 @@ const Login: React.FC = () => {
       >
         <Typography.Title>Welcome Back!</Typography.Title>
         <Form.Item
-          name="Email"
-          rules={[{ required: true, message: "Please input your Email!" }]}
+          name="email"
+          rules={[
+            {
+              type: "email",
+              message: "The input is not valid E-mail!",
+            },
+            {
+              required: true,
+              message: "Please input your E-mail!",
+            },
+          ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            type="email"
             placeholder="Email"
           />
         </Form.Item>

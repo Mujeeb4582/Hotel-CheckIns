@@ -17,14 +17,12 @@ import {
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/login.module.scss";
-import { auth } from "../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import router from "next/router";
 
 const Login: React.FC = () => {
   const onFinish = (values: any) => {
-    // console.log("Received values of form: ", values);
-
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
         // Signed in
@@ -40,7 +38,9 @@ const Login: React.FC = () => {
       });
   };
 
-  const login = () => {
+  const loginWithGoogle = async () => {
+    const { user } = await signInWithPopup(auth, provider);
+    router.push("/");
     message.success("Login Successful!");
   };
 
@@ -109,17 +109,17 @@ const Login: React.FC = () => {
         <div className={styles.socialLogin}>
           <GoogleOutlined
             className={styles.socialIcon}
-            onClick={login}
+            onClick={loginWithGoogle}
             style={{ color: "#DB4437" }}
           />
           <FacebookFilled
             className={styles.socialIcon}
-            onClick={login}
+            // onClick={loginWithFacebook}
             style={{ color: "#3b5998" }}
           />
           <TwitterOutlined
             className={styles.socialIcon}
-            onClick={login}
+            // onClick={loginWithTwitter}
             style={{ color: "#00acee" }}
           />
         </div>

@@ -14,7 +14,6 @@ const { Content } = Layout;
 
 export default function Home() {
   const [open, setopen] = useState(false);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {

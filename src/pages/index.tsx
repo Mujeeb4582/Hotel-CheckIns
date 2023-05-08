@@ -1,16 +1,31 @@
 import Head from "next/head";
-import { useCallback, useState } from "react";
-import { Layout, Button, Modal } from "antd";
+import { useCallback, useEffect, useState } from "react";
+import { Layout, Button, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import MyHeader from "@/components/layout/header";
 import TableWithDetails from "@/components/table";
 import MyForm from "@/components/form";
 import styles from "../styles/Home.module.scss";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import router from "next/router";
 
 const { Content } = Layout;
 
 export default function Home() {
   const [open, setopen] = useState(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push("/login");
+        message.success("Logout Successful!");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [auth, router]);
 
   const onCancel = useCallback(() => {
     setopen(false);
